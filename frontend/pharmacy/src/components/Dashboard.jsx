@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
-
+import Header from './Header';
+import Hero from './Hero'
 function Dashboard() {
   const [user, setUser] = useState(null);
 
@@ -15,6 +16,9 @@ function Dashboard() {
   }, []);
 
   return (
+    <>
+    <Header/>;
+    <Hero />;
     <div>
       {user ? (
         <div>
@@ -27,6 +31,7 @@ function Dashboard() {
         <p>Loading...</p>
       )}
     </div>
+    </>
   );
 }
 

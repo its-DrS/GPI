@@ -1,10 +1,19 @@
-// LoginRegister.jsx
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-// If you have access to React Icons or similar icon library, you can import and use them
+import { useEffect } from 'react';
+
+
+
+
 
 export default function AuthSystem() {
   const navigate = useNavigate();
+  useEffect(() => {
+    const token = localStorage.getItem('accesToken');
+    if (token) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
   const [isLogin, setIsLogin] = useState(true);
   const [formData, setFormData] = useState({
     username: '',

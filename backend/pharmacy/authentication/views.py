@@ -7,9 +7,9 @@ from rest_framework import status
 from .serializers import RegisterSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import CustomTokenObtainPairSerializer
+from rest_framework_simplejwt.tokens import RefreshToken
 
-# Create your views here.
-# @api_view(["GET"])
+
 class CustomTokenObtainPairView(TokenObtainPairView):
     serializer_class = CustomTokenObtainPairSerializer
 
@@ -23,6 +23,7 @@ def register(request):
     # If the data is valid, save the user and return a success response
     if serializer.is_valid():
         user = serializer.save()
+        refresh = RefreshToken.for_user(user)
         return Response({
             'message': 'User registered successfully',
             'user': {
@@ -32,7 +33,9 @@ def register(request):
                 'last_name': user.last_name,
                 'phone': user.phone,
                 'profile_img': request.build_absolute_uri(user.profile_img.url) if user.profile_img else None,
-            }
+            },
+            "access": str(refresh.access_token),
+            "refresh": str(refresh)
         }, status=status.HTTP_201_CREATED)
 
     # If the data is invalid, return the errors
